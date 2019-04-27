@@ -26,9 +26,21 @@ _set_im2a
 
 _set_controls
 	xor a
-	call cls
+	call cls		;cls
 	ld hl, _text
-	call print_hl
+	call print_hl		;print menu
+	ld c, 56		;multicolor title	
+	ld b, 22
+	ld hl, 22528 + 256 +5
+_set_controls1
+	ld (hl), c
+	inc l
+	djnz _set_controls1
+	ld a, c			;change title color
+	xor 64
+	ld c, a
+	call key_q		;check keys
+	jr z, _set_control1	;loop if no keys
 	
 
 
@@ -38,14 +50,13 @@ _set_controls
 _text
 	.BYTE 22,6,6,16,0
         ;      01234567890123456789012
-	.BYTE "B L A C K   F L A G"
-	.BYTE 22,8,10,16,65
-	.BYTE "SELECT  CONTROLS"
-	.BYTE 22,11,12,16,70
-	.BYTE "1 SINCLAIR",22,11,13
-	.BYTE "2   CURSOR",22,11,14
-	.BYTE "3    QAOPM",22,11,15
-	.BYTE "4    EDUIN",22,7,17,16,2
+	.BYTE 22,8,6
+	.BYTE "B L A C K    F L A G"
+	.BYTE 22,11,10,16,65
+	.BYTE "1 REDEFINE KEYS"
+	.BYTE 22,12,12,16,70
+	.BYTE "5 START GAME"
+	.BYTE 22,15,7,16,1
 	.BYTE "CATMEOWS 2018-2019", 0 
 
 _controls

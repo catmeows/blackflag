@@ -2,32 +2,31 @@
 
 wait_nokey
 	;wait until no key is pressed
-	push bc
 	push af
-	ld bc, 254
 _wait1
-	in a, (c)
-	and %00011111
-	cp 31
-	jr nz, _wait1
+	call key_q
+	jr nz, wait1
 	pop af
-	pop bc
 	ret
 
 wait_key
 	;wait for key
-	push bc
 	push af
-	ld bc, 254
 _wait2
+	call key_q
+	jr z, _wait2
+	pop af
+	ret
+key_q
+	;check keys and return
+	push bc
+	ld bc, 254
 	in a, (c)
 	and %00011111
 	cp 31
-	jr z, _wait2
-	pop af
 	pop bc
 	ret
-
+		
 get_keys
 	;return collected keys
 	push ix

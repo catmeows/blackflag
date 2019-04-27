@@ -37,14 +37,14 @@ _print_control1
 	cp 22
 	jr nz, _print_control2
 	ld a, c
-	ld (_print_pos), a
+	ld (_print_pos + 1), a
 	ld a, 23
 	jr _print_control_set
 _print_control2
 	cp 23
 	jr nz, _print_control3
 	ld a, c
-	ld (_print_pos + 1), a
+	ld (_print_pos), a
 	jr _print_control_reset
 _print_control3
 	cp 24
