@@ -4,6 +4,7 @@ cold_start
 	call _set_im2		;set im 2	
 	call _tune		;play song
 	call _set_controls	;select controls
+	call _check_ay		;check ay
 	jp start
 
 _set_im2
@@ -29,20 +30,29 @@ _set_controls
 	call cls		;cls
 	ld hl, _text
 	call print_hl		;print menu
-	ld c, 56		;multicolor title	
+	ld e, 56		;multicolor title	
+_set_controls2
 	ld b, 22
 	ld hl, 22528 + 256 +5
 _set_controls1
-	ld (hl), c
+	ld (hl), e
 	inc l
 	djnz _set_controls1
-	ld a, c			;change title color
+	ld a, e			;change title color
 	xor 64
-	ld c, a
+	ld e, a
 	call key_q		;check keys
-	jr z, _set_control1	;loop if no keys
+	jr z, _set_control2	;loop if no keys
+	ld bc, $F7FE		;keys 5..1
+	in a, (c)
+	and %00011111
+	cp 15			; '5' pressed ?
+	ret z
+	cp 30			; '1' pressed ?
+	jr nz, _set_controls2	; if not, loop
+	xor a
+	call cls
 	
-
 
 
 

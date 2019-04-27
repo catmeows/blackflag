@@ -42,6 +42,7 @@ _get_keys2
 	jr nz, _get_keys1
 	scf
 _get_keys1
+	ccf
 	rl l
 	add ix, de
 	dec h
