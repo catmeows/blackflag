@@ -52,11 +52,35 @@ _set_controls1
 	jr nz, _set_controls2	; if not, loop
 	xor a
 	call cls
+	ld hl, _controls	;texts
+	ld ix, key_data		;key data
+	ld b, 5
+_set_controls5
+	push bc			;save loop count
+	push ix			;save key data	
+	call print_hl		;print text for a key
+	call wait_nokey		;be sure nothing is pressed now
 	
-
-
-
-
+	ld bc, $FEFE		;set port
+_set_controls4
+	in a, (bc)		;read five keys
+	and 31
+	cp 31
+	jr nz, _set_controls3	;pressed ?
+	rrc b			;try next five keys
+	jr _set_controls4
+_set_controls3
+	xor 31			;reverse 5 lower bits
+	pop ix			;restore key data
+	ld (ix + 0), c		;store port		
+	ld (ix + 1), b
+	ld (ix + 2), a		;and key mask
+	ld de, 3
+	add ix, de		;move to next key data record
+	pop bc			;restore loop counter
+	djnz _set_controls5	;next key
+	jr _set_controls	;back to menu
+	
 _text
 	.BYTE 22,6,6,16,0
         ;      01234567890123456789012
@@ -70,6 +94,15 @@ _text
 	.BYTE "CATMEOWS 2018-2019", 0 
 
 _controls
-
+	.BYTE 22,12,0,16,72
+	.BYTE "PRESS A KEY FOR UP   ", 0 
+	.BYTE 22,12,0,16,72
+	.BYTE "PRESS A KEY FOR DOWN ", 0
+	.BYTE 22,12,0,16,72
+	.BYTE "PRESS A KEY FOR LEFT ", 0
+	.BYTE 22,12,0,16,72
+	.BYTE "PRESS A KEY FOR RIGHT", 0
+	.BYTE 22,12,0,16,72
+	.BYTE "PRESS A KEY FOR FIRE ", 0
 
 

@@ -3,9 +3,9 @@
 print_hl
 	;print zero terminated string at HL
 	ld a, (hl)
+	inc hl			;HL always points to next byte 
 	or a
 	ret z
-	inc hl
 	push hl
 	call print_char
 	pop hl

@@ -28,7 +28,8 @@ key_q
 	ret
 		
 get_keys
-	;return collected keys
+	;return collected keys - bit is set if key presssed
+	;order is up, down, left, right, fire
 	push ix
 	push bc
 	push de
@@ -53,7 +54,7 @@ _get_keys1
 	ret
 
 key_data
-	.BYTE 0,0,0	
+	.BYTE 0,0,0	;here is port HI LO, and mask for bit key
 	.BYTE 0,0,0	
         .BYTE 0,0,0
 	.BYTE 0,0,0	
