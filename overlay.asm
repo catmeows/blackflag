@@ -2,17 +2,18 @@
 
 cold_start
 	call _set_im2		;set im 2	
-	call _tune		;play song
+	;call _tune		;play song   - TODO
+	call print_init		;setup print
 	call _set_controls	;select controls
-	call _check_ay		;check ay
+	call _check_ay		;check ay  - TODO
 	jp start
 
 _set_im2
 	ld hl, im2_table
 	ld bc, 257
-	ld a, $A0
+	ld e, $A0
 _set_im2a
-	ld (hl), a
+	ld (hl), e
 	inc hl
 	dec bc
 	ld a, b
@@ -26,7 +27,7 @@ _set_im2a
 	ret 
 
 _set_controls
-	xor a
+	ld a, 1
 	call cls		;cls
 	ld hl, _text
 	call print_hl		;print menu
@@ -42,7 +43,7 @@ _set_controls1
 	xor 64
 	ld e, a
 	call key_q		;check keys
-	jr z, _set_control2	;loop if no keys
+	jr z, _set_controls2	;loop if no keys
 	ld bc, $F7FE		;keys 5..1
 	in a, (c)
 	and %00011111
@@ -63,7 +64,7 @@ _set_controls5
 	
 	ld bc, $FEFE		;set port
 _set_controls4
-	in a, (bc)		;read five keys
+	in a, (c)		;read five keys
 	and 31
 	cp 31
 	jr nz, _set_controls3	;pressed ?
@@ -80,29 +81,30 @@ _set_controls3
 	pop bc			;restore loop counter
 	djnz _set_controls5	;next key
 	jr _set_controls	;back to menu
+
+_check_ay
 	
 _text
-	.BYTE 22,6,6,16,0
         ;      01234567890123456789012
 	.BYTE 22,8,6
 	.BYTE "B L A C K    F L A G"
-	.BYTE 22,11,10,16,65
+	.BYTE 22,11,9,16,70
 	.BYTE "1 REDEFINE KEYS"
-	.BYTE 22,12,12,16,70
+	.BYTE 22,12,9,16,70
 	.BYTE "5 START GAME"
 	.BYTE 22,15,7,16,1
-	.BYTE "CATMEOWS 2018-2019", 0 
+	.BYTE "CATMEOWS 2018-2019", 255 
 
 _controls
-	.BYTE 22,12,0,16,72
-	.BYTE "PRESS A KEY FOR UP   ", 0 
-	.BYTE 22,12,0,16,72
-	.BYTE "PRESS A KEY FOR DOWN ", 0
-	.BYTE 22,12,0,16,72
-	.BYTE "PRESS A KEY FOR LEFT ", 0
-	.BYTE 22,12,0,16,72
-	.BYTE "PRESS A KEY FOR RIGHT", 0
-	.BYTE 22,12,0,16,72
-	.BYTE "PRESS A KEY FOR FIRE ", 0
+	.BYTE 22,12,5,16,70
+	.BYTE "PRESS A KEY FOR UP   ", 255 
+	.BYTE 22,12,5,16,70
+	.BYTE "PRESS A KEY FOR DOWN ", 255
+	.BYTE 22,12,5,16,70
+	.BYTE "PRESS A KEY FOR LEFT ", 255
+	.BYTE 22,12,5,16,70
+	.BYTE "PRESS A KEY FOR RIGHT", 255
+	.BYTE 22,12,5,16,70
+	.BYTE "PRESS A KEY FOR FIRE ", 255
 
 

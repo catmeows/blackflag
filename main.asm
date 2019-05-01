@@ -42,7 +42,9 @@ time
 
 	#INCLUDE "screen_utils.asm"
 
+	#INCLUDE "key_utils.asm"
 
+start
 
 
 

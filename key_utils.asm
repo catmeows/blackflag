@@ -5,7 +5,7 @@ wait_nokey
 	push af
 _wait1
 	call key_q
-	jr nz, wait1
+	jr nz, _wait1
 	pop af
 	ret
 
@@ -38,7 +38,7 @@ get_keys
 _get_keys2
 	ld c, (ix + 0)
 	ld b, (ix + 1)
-	in a, (bc)
+	in a, (c)
 	and (ix + 2)	
 	jr nz, _get_keys1
 	scf

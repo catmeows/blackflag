@@ -1,10 +1,10 @@
 	.MODULE print
 
 print_hl
-	;print zero terminated string at HL
+	;print string terminated by 255 located at HL
 	ld a, (hl)
 	inc hl			;HL always points to next byte 
-	or a
+	cp 255
 	ret z
 	push hl
 	call print_char
@@ -68,6 +68,7 @@ print_char
 	ld a, (_expect)
 	or a
 	jp nz, _print_control	;expecting parameters for control code
+	ld a, c
 	cp 16			;? color
 	jr nz, _print_char1
 _print_expect
@@ -86,7 +87,6 @@ _print_char1
 	push af
 	call _print_bounds	;? to far on the right?
 	pop af
-	ld a, c
 	sub 32			;compute font pointer
 	add a, a
 	ld l, a

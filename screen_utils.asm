@@ -9,4 +9,5 @@ cls
 	ldir
 	ld (hl), a
 	ld bc, 767
+	ldir
         ret
