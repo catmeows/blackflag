@@ -33,9 +33,11 @@ _set_controls
 	call print_hl		;print menu
 	ld e, 56		;multicolor title	
 _set_controls2
-	ld b, 22
+	ld b, 11
 	ld hl, 22528 + 256 +5
 _set_controls1
+	ld (hl), e
+	inc l
 	ld (hl), e
 	inc l
 	djnz _set_controls1
