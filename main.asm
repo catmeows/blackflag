@@ -44,6 +44,8 @@ time
 
 	#INCLUDE "key_utils.asm"
 
+	#INCLUDE "depack_text.asm"
+
 start
 
 
