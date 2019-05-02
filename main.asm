@@ -12,7 +12,8 @@
 ; 0xFE40 (65088) - screen line 448B table
 
 
-
+	.ORG $6100
+	#INCLUDE "messages.asm"
 
 
 	.ORG $A0A0
