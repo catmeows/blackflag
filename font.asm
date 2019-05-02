@@ -194,9 +194,14 @@ font
 	;= - reserved
 	.BYTE 0,0,0,0,0,0,0,0
 
-	;> - reserved
-	.BYTE 0,0,0,0,0,0,0,0
-
+	;> - sword cursor
+	.BYTE 0, 0
+	.BYTE %00100000
+	.BYTE %00111110
+	.BYTE %11111111
+	.BYTE %00111110
+	.BYTE %00100000, 0
+	
 	;? 
 	.BYTE 0
 	.BYTE %00111110

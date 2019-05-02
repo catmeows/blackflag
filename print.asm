@@ -151,6 +151,10 @@ _print_bounds
 	jr c, _print_eol
 	ret
 
+print_getpos
+	ld bc, (_print_pos)
+	ret
+
 _print_pos
 	.BYTE 0, 0	
 _expect
