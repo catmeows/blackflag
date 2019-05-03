@@ -1,4 +1,6 @@
 	.MODULE depack_text
+	
+	;test: 4800 chars packed to 2079 bytes + 512 bytes dictionary -> 54% i.e. 4.3 bits per character
 
 depack_text
 	;HL callback
