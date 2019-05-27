@@ -46,6 +46,8 @@ time
 	#INCLUDE "key_utils.asm"
 
 	#INCLUDE "depack_text.asm"
+	
+	#INCLUDE "sound.asm"
 
 start
 
