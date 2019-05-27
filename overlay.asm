@@ -85,6 +85,24 @@ _set_controls3
 	jr _set_controls	;back to menu
 
 _check_ay
+	;simply try to write AY port then read the value
+	;if they are same, we have AY on board
+	ld bc, $FFFD
+	ld e, 14	
+	out (c), e 	;select envelope register
+	push bc
+	ld bc, $BFFD
+	ld d, 10
+	out (c), d	;write a value
+	pop bc
+	out (c), e	;select envelope register again
+	in a, (c)	;read the value
+	cp d		;compare
+	ret nz		;no AY, do nothing
+	ld a, 1
+	ld (ay_on), a
+	ret
+	
 	
 _text
         ;      01234567890123456789012
