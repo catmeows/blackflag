@@ -54,8 +54,8 @@ _get_keys1
 	ret
 
 key_data
-	.BYTE 0,0,0	;here is port HI LO, and mask for bit key
-	.BYTE 0,0,0	
-        .BYTE 0,0,0
-	.BYTE 0,0,0	
-	.BYTE 0,0,0		
+	.BYTE $FE,$FB,$01	;here is port HI LO, and mask for bit key
+	.BYTE $FE,$FD,$01   ;predefined keys: QAOPM	
+    .BYTE $FE,$DF,$02
+	.BYTE $FE,$DF,$01	
+	.BYTE $FE,$7F,$04		

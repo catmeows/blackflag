@@ -3,7 +3,7 @@
 ; MEMORY MAP
 ;
 ;
-; 0x6100 (24832)
+; 0x6100 (24832) - packed texts
 ;
 ;
 ; 0xA0A0 (41120) - im 2 handler

@@ -96,6 +96,7 @@ _check_ay
 	out (c), d	;write a value
 	pop bc
 	out (c), e	;select envelope register again
+	xor a		;reset value
 	in a, (c)	;read the value
 	cp d		;compare
 	ret nz		;no AY, do nothing
@@ -126,5 +127,6 @@ _controls
 	.BYTE "PRESS A KEY FOR RIGHT", 255
 	.BYTE 22,12,5,16,70
 	.BYTE "PRESS A KEY FOR FIRE ", 255
+	
 
 

@@ -62,7 +62,7 @@ print_char
 	; 16, color
 	; 22, y, x 
 	; 24, lx
-        ; 25, rx
+    ; 25, rx
 
 	ld c, a
 	ld a, (_expect)

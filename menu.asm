@@ -85,13 +85,14 @@ _menu3
 	call print_hl
 	ld a, '>'		;cursor
 	call print_char
+	;TODO need some delay here to let the cursor on position for while
 	jr _menu5		;loop
 
-_menu_count	.BYTE 0
+_menu_count	    .BYTE 0
 _cursor_select	.BYTE 0
-_cursor_print	.BYTE 22
-_cursor_pos	.WORD 0
-		.BYTE 16, 123, 255			
+_cursor_print	.BYTE 22				;print cursor
+_cursor_pos	    .WORD 0					;at this position
+		        .BYTE 16, 123, 255		;with this color	
 
 _menu_at 
 	.BYTE 22, 0, 0, 24, 0, 25, 0, 16, 120, 255
