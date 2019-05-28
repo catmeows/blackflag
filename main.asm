@@ -50,7 +50,16 @@ time
 	#INCLUDE "sound.asm"
 
 start
-
+	call gen_line_table
+	ld a, $78	;black ink, white paper, bright on
+	call cls	;clear screen
+	ld hl, 16
+	ld bc, 0
+	call depack_text
+temploop
+	jr temploop
+test_decode
+	ret
 
 
 

@@ -42,13 +42,14 @@ _decode
 	jr nz, _decode1
 	inc hl
 	ld a, (hl)		;get literal
-_callback
-	jp 0			;apply callback	
+_callback	
+	jp 0			;apply callback
 _decode1
 	push hl			;not a leaf
 	call _decode		;decode first (recursion)
 	pop hl			
 	inc hl
+	ld a, (hl)
 	jp _decode		;decode second (recursion) and leave		
 	
 
