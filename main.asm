@@ -53,7 +53,8 @@ start
 	call gen_line_table
 	ld a, $78	;black ink, white paper, bright on
 	call cls	;clear screen
-	ld hl, 16
+	call print_init
+	ld hl, print_char
 	ld bc, 0
 	call depack_text
 temploop
