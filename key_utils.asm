@@ -33,21 +33,24 @@ get_keys
 	push ix
 	push bc
 	push de
+	push hl
+	ld ix, key_data
 	ld de, 3
-	ld hl, 8
+	ld hl, $500
 _get_keys2
 	ld c, (ix + 0)
 	ld b, (ix + 1)
-	in a, (c)
-	and (ix + 2)	
-	jr nz, _get_keys1
-	scf
+	in a, (c)			;read port
+	and (ix + 2)		;mask bit
+	jr nz, _get_keys1	;NZ if not pressed, Z if pressed
+	scf					;set bit if pressed, otherwise will go with carry=0 as result of AND 
 _get_keys1
-	ccf
-	rl l
-	add ix, de
+	rl l				;collect bit
+	add ix, de			;move to next key
 	dec h
 	jr nz, _get_keys2
+	ld a, l
+	pop hl
 	pop de
 	pop bc
 	pop ix

@@ -37,14 +37,14 @@ _print_control1
 	cp 22
 	jr nz, _print_control2
 	ld a, c
-	ld (_print_pos + 1), a
+	ld (_print_pos), a
 	ld a, 23
 	jr _print_control_set
 _print_control2
 	cp 23
 	jr nz, _print_control3
 	ld a, c
-	ld (_print_pos), a
+	ld (_print_pos + 1), a
 	jr _print_control_reset
 _print_control3
 	cp 24
@@ -63,6 +63,7 @@ print_char
 	; 22, y, x 
 	; 24, lx
     ; 25, rx
+	; n - new line
 
 	ld c, a
 	ld a, (_expect)
@@ -81,7 +82,7 @@ _print_char1
 	jr z, _print_expect
 	cp 25			;? right margin
 	jr z, _print_expect
-	cp 13			;? eol
+	cp 110			;? eol 'n'
 	jr z, _print_eol
 	
 	push af
@@ -97,16 +98,16 @@ _print_char1
 	add hl, de
 	push hl			;store char pointer
 	ld de, (_print_pos)	;compute screen pointer
-	ld a, e			;get x
-        ld l, a
-	ld a, d
+	ld a, d			;get x
+    ld l, a
+	ld a, e
 	and 7
 	rrca
 	rrca
 	rrca
 	add a, l
 	ld l, a			;add (y mod 8) * 32 to lower byte
-	ld a, d
+	ld a, e
 	and %11000		;higher byte 
 	add a, $40		;+16384
 	ld h, a
@@ -130,21 +131,21 @@ _print_char2
 	ld d, a	
 	ld a, (_print_color)	;get color
 	ld (de), a		;store color
-	ld a, (_print_pos)	;x++
+	ld a, (_print_pos + 1)	;x++
 	inc a
-	ld (_print_pos), a
+	ld (_print_pos + 1), a
 	ret
 
 _print_eol			;eol -> go line down, to left margin
 	ld de, (_print_pos)
-	inc d
+	inc e
 	ld a, (_print_left)
-	ld e, a
+	ld d, a
 	ld (_print_pos), de
 	ret
 
 _print_bounds
-	ld a, (_print_pos)
+	ld a, (_print_pos + 1)
 	ld c, a
 	ld a, (_print_right)
 	cp c
@@ -156,6 +157,7 @@ print_getpos
 	ret
 
 _print_pos
+	;Y,X
 	.BYTE 0, 0	
 _expect
 	.BYTE 0	 

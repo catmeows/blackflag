@@ -3,15 +3,15 @@
 
 menu
 	;IX menu structure
-	; BYTE x
 	; BYTE y
+	; BYTE x
 	; BYTE left
 	; BYTE right 
 	; WORD text
 	; BYTE options count
 	; n * WORD
-	ld l, (ix + 0)		;setup print - x
-	ld h, (ix + 1)		;y
+	ld l, (ix + 0)		;setup print - y
+	ld h, (ix + 1)		;x
 	ld (_menu_at + 1), hl
 	ld a, (ix + 2)		;left
 	ld (_menu_at + 4), a
@@ -19,7 +19,7 @@ menu
 	inc a
 	ld (_menu_indent + 1), a
 	ld a, (ix + 3)		;right
-	ld (_menu_at + 5), a
+	ld (_menu_at + 6), a
 	ld hl, _menu_at
 	call print_hl		
 	ld hl, print_char	;set callback
@@ -29,19 +29,20 @@ menu
 	ld hl, _menu_indent	;print indent 
 	call print_hl
 	call print_getpos	;get position for cursor
-	dec c
+	dec b
 	ld (_cursor_pos), bc	;store position	
-	ld l, (ix + 6)
-	ld h, 0
+	ld b, (ix + 6)			;get menu count
+	ld l, b
+	dec l
+	ld h, 0					;and set the first
 	ld (_menu_count), hl 
-	
 _menu1
 	push bc			;print menu items
 	ld hl, print_char
 	ld c, (ix + 7)		;get item msg id
 	ld b, (ix + 8)
 	call depack_text	;print item
-	ld a, 13		
+	ld a, 'n'		
 	call print_char		;print EOL
 	inc ix			;next item
 	inc ix
@@ -62,7 +63,7 @@ _menu5
 	cp l
 	jr z, _menu3		;don't move and draw cursor
 	inc h			;update selection
-	inc b			;update position
+	inc c			;update position
 	jr _menu3		;draw cursor
 _menu2
 	bit 4, a		;is up ?		
@@ -71,7 +72,7 @@ _menu2
 	or a			;first item selected ?
 	jr z, _menu3		;don't move and draw cursor
 	dec h			;update selection
-	dec b			;update position
+	dec c			;update position
 	jr _menu3		;draw cursor
 _menu4
 	bit 0, a		;is fire ?
@@ -92,10 +93,10 @@ _menu_count	    .BYTE 0
 _cursor_select	.BYTE 0
 _cursor_print	.BYTE 22				;print cursor
 _cursor_pos	    .WORD 0					;at this position
-		        .BYTE 16, 123, 255		;with this color	
+		        .BYTE 16, 121, 255		;with this color	
 
 _menu_at 
 	.BYTE 22, 0, 0, 24, 0, 25, 0, 16, 120, 255
 
 _menu_indent
-	.BYTE 24, 0, 13, 255
+	.BYTE 24, 0, 'n', 255

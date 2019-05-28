@@ -14,6 +14,7 @@
 
 	.ORG $6100
 	#INCLUDE "messages.asm"
+	#INCLUDE "menu_data.asm"
 
 
 	.ORG $A0A0
@@ -48,19 +49,21 @@ time
 	#INCLUDE "depack_text.asm"
 	
 	#INCLUDE "sound.asm"
+	
+	#INCLUDE "menu.asm"
 
 start
 	call gen_line_table
 	ld a, $78	;black ink, white paper, bright on
 	call cls	;clear screen
 	call print_init
-	ld hl, print_char
-	ld bc, 0
-	call depack_text
+	ld ix, m_intro
+	call menu
+
 temploop
 	jr temploop
 test_decode
-	ret
+	
 
 
 
