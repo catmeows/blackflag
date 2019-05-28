@@ -80,6 +80,7 @@ _set_controls3
 	ld (ix + 2), a		;and key mask
 	ld de, 3
 	add ix, de		;move to next key data record
+	call beep_fx1
 	pop bc			;restore loop counter
 	djnz _set_controls5	;next key
 	jr _set_controls	;back to menu
