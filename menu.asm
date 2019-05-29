@@ -64,7 +64,7 @@ _menu5
 	jr z, _menu3		;don't move and draw cursor
 	inc h			;update selection
 	inc c			;update position
-	jr _menu3		;draw cursor
+	jr _menu3x		;draw cursor
 _menu2
 	bit 4, a		;is up ?		
 	jr z, _menu4		
@@ -73,12 +73,15 @@ _menu2
 	jr z, _menu3		;don't move and draw cursor
 	dec h			;update selection
 	dec c			;update position
-	jr _menu3		;draw cursor
+	jr _menu3x		;draw cursor
 _menu4
 	bit 0, a		;is fire ?
 	jr z, _menu3		;no, draw curdor
+	call beep_fx1
 	ld a, (_cursor_select)	;return selection
 	ret
+_menu3x	
+	call beep_fx2
 _menu3
 	ld (_menu_count), hl	;store selection
 	ld (_cursor_pos), bc	;store pos
@@ -86,7 +89,7 @@ _menu3
 	call print_hl
 	ld a, '>'		;cursor
 	call print_char
-	;TODO need some delay here to let the cursor on position for while
+	call wait_nokey		;wait no key
 	jr _menu5		;loop
 
 _menu_count	    .BYTE 0

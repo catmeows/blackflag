@@ -51,15 +51,12 @@ time
 	#INCLUDE "sound.asm"
 	
 	#INCLUDE "menu.asm"
+	
+	#INCLUDE "intro.asm"
 
 start
 	call gen_line_table
-	ld a, $78	;black ink, white paper, bright on
-	call cls	;clear screen
-	call print_init
-	ld ix, m_intro
-	call menu
-
+	call select_role
 temploop
 	jr temploop
 test_decode
