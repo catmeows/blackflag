@@ -83,16 +83,6 @@ m_1680		.BYTE 4, 2, 2, 28
 
 
 
-;role1560
-;	.BYTE 4, 4, 4, 28
-;	.WORD msg_areyouan
-;	.BYTE 3
-;	.WORD msg_eseahawk, msg_fcorsair, msg_srenegade
 
-;role1600
-;	.BYTE 4, 4, 4, 28
-;	.WORD msg_areyouan
-;	.BYTE 4
-;	.WORD msg_eexplorer. msg_fadventurer, msg_dtrader, msg_srenegade
 
 

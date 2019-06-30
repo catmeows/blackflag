@@ -10,18 +10,7 @@ menu
 	; WORD text
 	; BYTE options count
 	; n * WORD
-	ld l, (ix + 0)		;setup print - y
-	ld h, (ix + 1)		;x
-	ld (_menu_at + 1), hl
-	ld a, (ix + 2)		;left
-	ld (_menu_at + 4), a
-	inc a			;indent by 2
-	inc a
-	ld (_menu_indent + 1), a
-	ld a, (ix + 3)		;right
-	ld (_menu_at + 6), a
-	ld hl, _menu_at
-	call print_hl		
+	call _setup_print
 	ld hl, print_char	;set callback
 	ld c, (ix + 4)		;get message id
 	ld b, (ix + 5)
@@ -98,8 +87,66 @@ _cursor_print	.BYTE 22				;print cursor
 _cursor_pos	    .WORD 0					;at this position
 		        .BYTE 16, 121, 255		;with this color	
 
+_setup_print
+	ld l, (ix + 0)		;setup print - y
+	ld h, (ix + 1)		;x
+	ld (_menu_at + 1), hl
+	ld a, (ix + 2)		;left
+	ld (_menu_at + 4), a
+	inc a			;indent by 2
+	inc a
+	ld (_menu_indent + 1), a
+	ld a, (ix + 3)		;right
+	ld (_menu_at + 6), a
+	ld hl, _menu_at
+	call print_hl
+	ret
+
 _menu_at 
 	.BYTE 22, 0, 0, 24, 0, 25, 0, 16, 120, 255
 
 _menu_indent
 	.BYTE 24, 0, 'n', 255
+	
+
+info
+	;IX info structure
+	; BYTE y
+	; BYTE x
+    ; BYTE left
+    ; BYTE right
+	; BYTE messages count
+	; n * WORD 
+	ld b, (ix + 4)	;get number of info screens	
+	push ix
+	pop hl
+	ld de, 5
+	add hl, de		;HL point to first screen of info
+_info_loop
+	push ix
+	push bc
+	push hl
+	ld a, $78
+	call cls		;init
+	call print_init
+	call _setup_print
+	pop hl			;get message id
+	ld c, (hl)
+	inc hl
+	ld b, (hl)
+	inc hl
+	push hl
+	ld hl, print_char
+	call depack_text	;print it
+	call wait_nokey		;ensure no key is pressed
+	call wait_key		;wait for key
+	call beep_fx1		
+	pop hl
+	pop bc
+	pop ix
+	djnz _info_loop		;next info screen
+	ret
+		
+	
+	
+	
